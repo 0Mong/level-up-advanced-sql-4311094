@@ -1,0 +1,54 @@
+/*
+DATE: 03/08/23
+NAME: Lynncf
+DEFINITION: Retrieve a list of employees, including first and last names, and the first and last names of their imediate managers.
+*/
+
+SELECT emp.firstName AS [Employee firstName], 
+      emp.lastName AS [Employee lastName], 
+      mng.firstName AS [Managers firstName], 
+      mng.lastName AS [Managers lastName]
+FROM employee emp
+INNER JOIN employee mng
+ON emp.employeeId = mng.managerId;
+
+
+/*
+DATE: 03/08/23
+NAME: Lynncf
+DEFINITION: Get a list of salespeople with zero sales.
+*/
+
+SELECT e.firstName, e.lastName, e.title, e.startDate, s.salesId
+FROM employee e
+LEFT JOIN sales s
+ON e.employeeId = s.employeeId
+WHERE e.title = 'Sales Person' AND s.salesId IS NULL;
+
+
+/*
+DATE: 03/08/23
+NAME: Lynncf
+DEFINITION: Get a list of all sales and all customers even if some of the data has been removed.
+*/
+
+SELECT cus.firstName, cus.lastName, cus.email, sls.salesAmount, sls.soldDate
+FROM customer cus
+INNER JOIN sales sls
+  ON cus.customerId = sls.customerId
+UNION
+-- Union with customers who have no sales
+SELECT cus.firstName, cus.lastName, cus.email, sls.salesAmount, sls.soldDate
+FROM customer cus 
+LEFT JOIN sales sls 
+  ON cus.customerId = sls.customerId
+WHERE sls.salesId IS NULL
+UNION
+-- Union with sales missing customer data
+SELECT cus.firstName, cus.lastName, cus.email, sls.salesAmount, sls.soldDate
+FROM sales sls
+LEFT JOIN customer cus 
+  ON sls.customerId = cus.customerId
+WHERE cus.customerId IS NULL;
+
+
