@@ -29,7 +29,7 @@ INNER JOIN employee emp
 WHERE sls.soldDate >= '2021-01-01' AND sls.soldDate < '2022-01-01';
 
 -- Implement case statements for each month. 
-SELECT emp.firstName, emp.lastName
+SELECT emp.firstName, emp.lastName,
   CASE 
     WHEN strftime('%m', soldDate) = '01'
     THEN salesAmount END AS JanSales,

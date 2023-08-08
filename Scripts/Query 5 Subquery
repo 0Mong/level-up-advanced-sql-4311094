@@ -1,0 +1,20 @@
+/*
+DATE: 08/08/23
+NAME: Lynncf
+DEFINITION: Find all sales where the car purchased was eletric.
+*/
+
+SELECT date(sls.soldDate) soldDate, sls.salesAmount, inv.colour, inv.year
+FROM sales sls
+INNER JOIN inventory inv
+ON inv.inventoryId = sls.inventoryId
+WHERE inv.modelId IN (
+    SELECT modelId
+    FROM model
+    WHERE EngineType = 'Electric'
+);
+
+
+
+
+
